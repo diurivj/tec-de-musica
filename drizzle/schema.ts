@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { relations, sql } from 'drizzle-orm';
 import {
   text,
@@ -7,6 +8,7 @@ import {
   uniqueIndex,
   index
 } from 'drizzle-orm/sqlite-core';
+import { createInsertSchema } from 'drizzle-zod';
 
 const roles = ['admin', 'student', 'teacher', 'employee'] as const;
 
@@ -227,3 +229,6 @@ export const instrumentsToClassroomsRelations = relations(
     })
   })
 );
+
+export const InsertUserSchema = createInsertSchema(users);
+export type InsertUser = z.infer<typeof InsertUserSchema>;

@@ -7,6 +7,7 @@
     "build": "remix vite:build",
     "db:generate": "drizzle-kit generate:sqlite",
     "db:migrate": "bun run ./drizzle/migrate",
+    "db:seed": "bun run ./drizzle/seed",
     "dev": "remix vite:dev --host",
     "format": "prettier --write . --config ./.prettierrc",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
@@ -18,13 +19,17 @@
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.1",
+    "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.30.8",
+    "drizzle-zod": "^0.5.1",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.8.1",
+    "@types/bcryptjs": "^2.4.6",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
