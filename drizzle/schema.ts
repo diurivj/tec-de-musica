@@ -8,7 +8,7 @@ import {
   uniqueIndex,
   index
 } from 'drizzle-orm/sqlite-core';
-import { createInsertSchema } from 'drizzle-zod';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 const roles = ['admin', 'student', 'teacher', 'employee'] as const;
 
@@ -232,3 +232,28 @@ export const instrumentsToClassroomsRelations = relations(
 
 export const InsertUserSchema = createInsertSchema(users);
 export type InsertUser = z.infer<typeof InsertUserSchema>;
+
+export const UserSchema = createSelectSchema(users);
+export type User = z.infer<typeof UserSchema>;
+
+export const LoginSchema = z.object({
+  email: z
+    .string({
+      invalid_type_error: 'El correo electrónico es inválido',
+      required_error: 'El correo electrónico es requerido'
+    })
+    .email({
+      message: 'El correo electrónico es inválido'
+    }),
+  password: z
+    .string({
+      invalid_type_error: 'La contraseña es inválida',
+      required_error: 'La contraseña es requerida'
+    })
+    .min(8, {
+      message: 'La contraseña debe tener al menos 8 caracteres'
+    })
+    .max(20, {
+      message: 'La contraseña debe tener como máximo 20 caracteres'
+    })
+});
