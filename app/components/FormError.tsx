@@ -7,10 +7,10 @@ type FormErrorProps = {
 };
 
 export function FormError({ id, className, errors }: FormErrorProps) {
-  if (!errors) return null;
+  if (!errors?.length) return null;
 
   return (
-    <div id={id} className={cn('text-sm text-destructive', className)}>
+    <div id={id} className={cn('text-xs text-destructive', className)}>
       {errors}
     </div>
   );

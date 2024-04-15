@@ -1,6 +1,5 @@
-import { z } from 'zod';
 import type { ActionFunctionArgs, MetaFunction } from '@remix-run/node';
-import { Form, useActionData } from '@remix-run/react';
+import { Form, redirect, useActionData } from '@remix-run/react';
 import { Button } from '~/components/ui/button';
 import {
   Card,
@@ -13,9 +12,11 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
-import { authenticator, login } from '~/utils/auth.server';
+import { authenticator } from '~/utils/auth.server';
 import { FormError } from '~/components/FormError';
 import { LoginSchema } from 'drizzle/schema';
+import { AuthorizationError } from 'remix-auth';
+import { useIsPending } from '~/hooks/useIsPending';
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,40 +27,38 @@ export const meta: MetaFunction = () => {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const submission = await parseWithZod(formData, {
-    schema: intent =>
-      LoginSchema.transform(async (data, ctx) => {
-        if (intent !== null) return { ...data, session: null };
-
-        const session = await login(data);
-        if (!session) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Correo electrónico o contraseña incorrectos'
-          });
-          return z.NEVER;
-        }
-
-        return { ...data, session };
-      }),
-    async: true
+  const submission = parseWithZod(formData, {
+    schema: LoginSchema
   });
 
-  if (submission.status !== 'success' || !submission.value.session) {
+  if (submission.status !== 'success') {
     return submission.reply({ hideFields: ['password'] });
   }
 
-  return await authenticator.authenticate('user-pass', request, {
-    successRedirect: '/home',
-    throwOnError: true,
-    context: { formData }
-  });
+  try {
+    const user = await authenticator.authenticate('user-pass', request, {
+      throwOnError: true,
+      context: { formData }
+    });
+    if (user) {
+      return redirect('/home');
+    }
+  } catch (error) {
+    if (error instanceof Response) return error;
+    if (error instanceof AuthorizationError) {
+      return submission.reply({
+        hideFields: ['password'],
+        fieldErrors: { password: [error.message] }
+      });
+    }
+  }
 }
 
 export default function Index() {
   const lastResult = useActionData<typeof action>();
 
   const [form, fields] = useForm({
+    id: 'login-form',
     lastResult,
     shouldValidate: 'onBlur',
     shouldRevalidate: 'onBlur',
@@ -68,6 +67,8 @@ export default function Index() {
       return parseWithZod(formData, { schema: LoginSchema });
     }
   });
+
+  const isPending = useIsPending();
 
   return (
     <main className='flex h-dvh items-center justify-center'>
@@ -106,14 +107,9 @@ export default function Index() {
                 errors={fields.password.errors}
               />
             </div>
-            <Button type='submit' className='w-full'>
+            <Button disabled={isPending} type='submit' className='w-full'>
               Iniciar sesión
             </Button>
-            <FormError
-              id={form.errorId}
-              errors={form.errors}
-              className='text-center'
-            />
           </Form>
         </CardContent>
       </Card>
