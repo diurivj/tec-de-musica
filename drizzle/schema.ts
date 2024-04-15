@@ -236,6 +236,14 @@ export type InsertUser = z.infer<typeof InsertUserSchema>;
 export const UserSchema = createSelectSchema(users);
 export type User = z.infer<typeof UserSchema>;
 
+export const UserSessionSchema = UserSchema.omit({
+  birthdate: true,
+  phoneNumber: true,
+  createdAt: true,
+  updatedAt: true
+});
+export type UserSession = z.infer<typeof UserSessionSchema>;
+
 export const LoginSchema = z.object({
   email: z
     .string({

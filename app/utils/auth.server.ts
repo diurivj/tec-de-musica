@@ -1,18 +1,9 @@
 import bcrypt from 'bcryptjs';
-import { z } from 'zod';
 import { db } from './db.server';
 import { Authenticator } from 'remix-auth';
 import { FormStrategy } from 'remix-auth-form';
 import { sessionStorage } from './session.server';
-import { UserSchema, type User, LoginSchema } from 'drizzle/schema';
-
-const UserSessionSchema = UserSchema.omit({
-  birthdate: true,
-  phoneNumber: true,
-  createdAt: true,
-  updatedAt: true
-});
-type UserSession = z.infer<typeof UserSessionSchema>;
+import { type User, LoginSchema, UserSession } from 'drizzle/schema';
 
 export const authenticator = new Authenticator<UserSession>(sessionStorage);
 

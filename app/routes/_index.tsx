@@ -17,7 +17,7 @@ import { Label } from '~/components/ui/label';
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { authenticator } from '~/utils/auth.server';
-import { FormError } from '~/components/FormError';
+import { FormError } from '~/components/form-error';
 import { LoginSchema } from 'drizzle/schema';
 import { AuthorizationError } from 'remix-auth';
 import { useIsPending } from '~/hooks/useIsPending';
@@ -40,13 +40,11 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
-    const user = await authenticator.authenticate('user-pass', request, {
+    return await authenticator.authenticate('user-pass', request, {
+      successRedirect: '/home',
       throwOnError: true,
       context: { formData }
     });
-    if (user) {
-      return redirect('/home');
-    }
   } catch (error) {
     if (error instanceof Response) return error;
     if (error instanceof AuthorizationError) {

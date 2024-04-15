@@ -3,15 +3,23 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
+  useLoaderData
 } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 
 import stylesheet from '~/tailwind.css?url';
+import { authenticator } from './utils/auth.server';
+import { Navbar } from './components/Navbar';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet }
 ];
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await authenticator.isAuthenticated(request);
+  return { user };
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,5 +40,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const { user } = useLoaderData<typeof loader>();
+  return (
+    <>
+      {user ? <Navbar /> : null}
+      <Outlet />
+    </>
+  );
 }

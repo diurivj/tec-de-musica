@@ -1,6 +1,6 @@
 {
   "arrowParens": "avoid",
-  "experimentalTernaries": true,
+  "experimentalTernaries": false,
   "jsxSingleQuote": true,
   "singleQuote": true,
   "tabWidth": 2,
