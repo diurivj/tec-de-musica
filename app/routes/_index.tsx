@@ -1,4 +1,8 @@
-import type { ActionFunctionArgs, MetaFunction } from '@remix-run/node';
+import type {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction
+} from '@remix-run/node';
 import { Form, redirect, useActionData } from '@remix-run/react';
 import { Button } from '~/components/ui/button';
 import {
@@ -52,6 +56,12 @@ export async function action({ request }: ActionFunctionArgs) {
       });
     }
   }
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await authenticator.isAuthenticated(request);
+  if (!user) return null;
+  return redirect('/home');
 }
 
 export default function Index() {
