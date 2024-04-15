@@ -47,6 +47,9 @@ module.exports = {
         'import/resolver': {
           typescript: {}
         }
+      },
+      rules: {
+        'react/prop-types': [2, { ignore: ['className'] }]
       }
     },
 
