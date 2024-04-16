@@ -21,6 +21,8 @@ export function Navbar() {
         { name: 'Inicio', to: '/home' },
         { name: 'Alumnos', to: '/students' },
         { name: 'Profesores', to: '/teachers' },
+        { name: 'Instrumentos', to: '/instruments' },
+        { name: 'Salónes', to: '/classrooms' },
         { name: 'Admin', to: '/admin' }
       ];
     }

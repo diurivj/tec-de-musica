@@ -39,6 +39,7 @@ CREATE TABLE `lessons` (
 	`end_date` integer NOT NULL,
 	`type` text,
 	`origin_id` integer,
+	`destination_id` integer,
 	`created_at` integer DEFAULT (cast (unixepoch () as int)),
 	`updated_at` integer DEFAULT (cast (unixepoch () as int))
 );

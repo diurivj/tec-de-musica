@@ -16,9 +16,9 @@ const lessonType = [
   'single',
   'recurrent',
   'replacement_origin',
-  'replacement',
+  'replacement_scheduled',
   'substitution_origin',
-  'substitution',
+  'substitution_scheduled',
   'trial',
   'canceled'
 ] as const;
@@ -79,6 +79,7 @@ export const lessons = sqliteTable(
     endDate: integer('end_date', { mode: 'timestamp' }).notNull(),
     type: text('type', { enum: lessonType }),
     originId: integer('origin_id'),
+    destinationId: integer('destination_id'),
     createdAt: integer('created_at').default(sql`(cast (unixepoch () as int))`),
     updatedAt: integer('updated_at').default(sql`(cast (unixepoch () as int))`)
   },
@@ -139,7 +140,13 @@ export const classroomsRelations = relations(classrooms, ({ many }) => ({
 
 export const lessonsRelations = relations(lessons, ({ one, many }) => ({
   origin: one(lessons, {
+    relationName: 'origin',
     fields: [lessons.originId],
+    references: [lessons.id]
+  }),
+  destination: one(lessons, {
+    relationName: 'destination',
+    fields: [lessons.destinationId],
     references: [lessons.id]
   }),
   notes: many(notes),
@@ -229,6 +236,20 @@ export const instrumentsToClassroomsRelations = relations(
     })
   })
 );
+
+export const InsertClassroomSchema = createInsertSchema(classrooms, {
+  name: z
+    .string({
+      required_error: 'El nombre es requerido',
+      invalid_type_error: 'El nombre es inválido'
+    })
+    .transform(value => {
+      const trimmed = value.trim();
+      return trimmed.replace(/(^\w{1})|(\s+\w{1})/g, (letter: string) =>
+        letter.toUpperCase()
+      );
+    })
+});
 
 export const InsertUserSchema = createInsertSchema(users);
 export type InsertUser = z.infer<typeof InsertUserSchema>;

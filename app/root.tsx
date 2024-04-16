@@ -7,10 +7,9 @@ import {
   useLoaderData
 } from '@remix-run/react';
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
-
-import stylesheet from '~/tailwind.css?url';
 import { authenticator } from './utils/auth.server';
 import { Navbar } from './components/Navbar';
+import stylesheet from '~/tailwind.css?url';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet }

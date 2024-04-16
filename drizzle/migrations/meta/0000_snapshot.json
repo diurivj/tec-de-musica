@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "5d5965ae-3a84-40a7-b126-eaabdfd0e990",
+  "id": "a72a602b-3f9d-4ce0-9952-952b6befb690",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "classrooms": {
@@ -41,7 +41,9 @@
       "indexes": {
         "classrooms_name_unique": {
           "name": "classrooms_name_unique",
-          "columns": ["name"],
+          "columns": [
+            "name"
+          ],
           "isUnique": true
         }
       },
@@ -86,7 +88,9 @@
       "indexes": {
         "instruments_name_unique": {
           "name": "instruments_name_unique",
-          "columns": ["name"],
+          "columns": [
+            "name"
+          ],
           "isUnique": true
         }
       },
@@ -118,8 +122,12 @@
           "name": "instruments_to_classrooms_classroom_id_classrooms_id_fk",
           "tableFrom": "instruments_to_classrooms",
           "tableTo": "classrooms",
-          "columnsFrom": ["classroom_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "classroom_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -127,15 +135,22 @@
           "name": "instruments_to_classrooms_instrument_id_instruments_id_fk",
           "tableFrom": "instruments_to_classrooms",
           "tableTo": "instruments",
-          "columnsFrom": ["instrument_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "instrument_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "instruments_to_classrooms_classroom_id_instrument_id_pk": {
-          "columns": ["classroom_id", "instrument_id"],
+          "columns": [
+            "classroom_id",
+            "instrument_id"
+          ],
           "name": "instruments_to_classrooms_classroom_id_instrument_id_pk"
         }
       },
@@ -165,8 +180,12 @@
           "name": "instruments_to_users_user_id_users_id_fk",
           "tableFrom": "instruments_to_users",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -174,15 +193,22 @@
           "name": "instruments_to_users_instrument_id_instruments_id_fk",
           "tableFrom": "instruments_to_users",
           "tableTo": "instruments",
-          "columnsFrom": ["instrument_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "instrument_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "instruments_to_users_user_id_instrument_id_pk": {
-          "columns": ["instrument_id", "user_id"],
+          "columns": [
+            "instrument_id",
+            "user_id"
+          ],
           "name": "instruments_to_users_user_id_instrument_id_pk"
         }
       },
@@ -261,6 +287,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "destination_id": {
+          "name": "destination_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "integer",
@@ -281,42 +314,58 @@
       "indexes": {
         "type_idx": {
           "name": "type_idx",
-          "columns": ["type"],
+          "columns": [
+            "type"
+          ],
           "isUnique": false
         },
         "start_date_idx": {
           "name": "start_date_idx",
-          "columns": ["start_date"],
+          "columns": [
+            "start_date"
+          ],
           "isUnique": false
         },
         "end_date_idx": {
           "name": "end_date_idx",
-          "columns": ["end_date"],
+          "columns": [
+            "end_date"
+          ],
           "isUnique": false
         },
         "student_idx": {
           "name": "student_idx",
-          "columns": ["student_id"],
+          "columns": [
+            "student_id"
+          ],
           "isUnique": false
         },
         "teacher_idx": {
           "name": "teacher_idx",
-          "columns": ["teacher_id"],
+          "columns": [
+            "teacher_id"
+          ],
           "isUnique": false
         },
         "reporter_idx": {
           "name": "reporter_idx",
-          "columns": ["reporter_id"],
+          "columns": [
+            "reporter_id"
+          ],
           "isUnique": false
         },
         "instrument_idx": {
           "name": "instrument_idx",
-          "columns": ["instrument_id"],
+          "columns": [
+            "instrument_id"
+          ],
           "isUnique": false
         },
         "classroom_idx": {
           "name": "classroom_idx",
-          "columns": ["classroom_id"],
+          "columns": [
+            "classroom_id"
+          ],
           "isUnique": false
         }
       },
@@ -401,8 +450,12 @@
           "name": "passwords_user_id_users_id_fk",
           "tableFrom": "passwords",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -489,27 +542,37 @@
       "indexes": {
         "users_email_unique": {
           "name": "users_email_unique",
-          "columns": ["email"],
+          "columns": [
+            "email"
+          ],
           "isUnique": true
         },
         "email_idx": {
           "name": "email_idx",
-          "columns": ["email"],
+          "columns": [
+            "email"
+          ],
           "isUnique": true
         },
         "role_idx": {
           "name": "role_idx",
-          "columns": ["role"],
+          "columns": [
+            "role"
+          ],
           "isUnique": false
         },
         "created_at_idx": {
           "name": "created_at_idx",
-          "columns": ["created_at"],
+          "columns": [
+            "created_at"
+          ],
           "isUnique": false
         },
         "updated_at_idx": {
           "name": "updated_at_idx",
-          "columns": ["updated_at"],
+          "columns": [
+            "updated_at"
+          ],
           "isUnique": false
         }
       },
